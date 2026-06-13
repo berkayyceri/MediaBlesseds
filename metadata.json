@@ -1,0 +1,6 @@
+{
+  "name": "Tattoo Reserve",
+  "description": "Premium Dövme Stüdyoları ve Tasarımcıları için Randevu, Portfolyo ve Takip Sistemi",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 2. Studios
+    match /studios/{studioId} {
+      allow read, write: if true;
+    }
+
+    // 3. Artists
+    match /artists/{artistId} {
+      allow read, write: if true;
+    }
+
+    // 4. Services
+    match /services/{serviceId} {
+      allow read, write: if true;
+    }
+
+    // 5. Appointments
+    match /appointments/{appointmentId} {
+      allow read, write: if true;
+    }
+
+    // 6. Notifications
+    match /notifications/{notificationId} {
+      allow read, write: if true;
+    }
+
+    // 7. Announcements
+    match /announcements/{announcementId} {
+      allow read, write: if true;
+    }
+
+    // 8. Auth Customers
+    match /auth_customers/{email} {
+      allow read, write: if true;
+    }
+
+    // 9. Auth Admins
+    match /auth_admins/{email} {
+      allow read, write: if true;
+    }
+
+    // 10. Auth Artists
+    match /auth_artists/{email} {
+      allow read, write: if true;
+    }
+
+    // 11. License Codes
+    match /license_codes/{codeId} {
+      allow read, write: if true;
+    }
+  }
+}

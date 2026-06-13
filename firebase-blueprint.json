@@ -1,0 +1,218 @@
+{
+  "entities": {
+    "Studio": {
+      "title": "Studio",
+      "description": "Information about a tattoo studio branch",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "branch": { "type": "string" },
+        "address": { "type": "string" },
+        "gallery": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["id", "name", "email", "phone", "branch"]
+    },
+    "Artist": {
+      "title": "Artist",
+      "description": "Information about a tattoo artist",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "title": { "type": "string" },
+        "avatar": { "type": "string" },
+        "bio": { "type": "string" },
+        "rating": { "type": "number" },
+        "completedTattoos": { "type": "number" },
+        "specialties": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "portfolio": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "url": { "type": "string" },
+              "title": { "type": "string" },
+              "category": { "type": "string" },
+              "artistId": { "type": "string" },
+              "likes": { "type": "number" },
+              "comments": { "type": "number" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "studioId": { "type": "string" },
+        "phone": { "type": "string" }
+      },
+      "required": ["id", "name", "title", "avatar", "bio", "completedTattoos", "specialties", "portfolio"]
+    },
+    "ServiceItem": {
+      "title": "ServiceItem",
+      "description": "A kind of tattoo service or session",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "durationMin": { "type": "number" },
+        "basePriceSec": { "type": "number" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "name", "durationMin", "basePriceSec", "description"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "An appointment booked by a client",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studioId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "artistId": { "type": "string" },
+        "artistName": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "services": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["Pending", "Confirmed", "Completed", "Cancelled"]
+        },
+        "clientImages": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "createdAt": { "type": "string" },
+        "totalPrice": { "type": "number" },
+        "totalDuration": { "type": "number" },
+        "cancelReason": { "type": "string" }
+      },
+      "required": ["id", "studioId", "customerName", "customerPhone", "customerEmail", "artistId", "artistName", "date", "time", "services", "notes", "status", "clientImages", "createdAt", "totalPrice", "totalDuration"]
+    },
+    "CustomNotification": {
+      "title": "CustomNotification",
+      "description": "A notification item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "appointmentId": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "isRead": { "type": "boolean" },
+        "type": {
+          "type": "string",
+          "enum": ["new_appointment", "status_change", "client_note", "portfolio_upload", "studio_invite", "studio_invite_accepted", "studio_invite_rejected", "reminder"]
+        },
+        "artistId": { "type": "string" },
+        "studioId": { "type": "string" },
+        "studioName": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "accepted", "declined"]
+        },
+        "role": {
+          "type": "string",
+          "enum": ["customer", "studio", "artist"]
+        }
+      },
+      "required": ["id", "title", "description", "appointmentId", "timestamp", "isRead", "type"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "A public studio announcement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "studioId": { "type": "string" },
+        "isPinned": { "type": "boolean" }
+      },
+      "required": ["id", "title", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "studios": {
+      "schema": { "$ref": "#/entities/Studio" },
+      "description": "Tattoo studios dictionary"
+    },
+    "artists": {
+      "schema": { "$ref": "#/entities/Artist" },
+      "description": "Tattoo artists directory"
+    },
+    "services": {
+      "schema": { "$ref": "#/entities/ServiceItem" },
+      "description": "Tattoo services catalogue"
+    },
+    "appointments": {
+      "schema": { "$ref": "#/entities/Appointment" },
+      "description": "Client appointments"
+    },
+    "notifications": {
+      "schema": { "$ref": "#/entities/CustomNotification" },
+      "description": "In-app notification system"
+    },
+    "announcements": {
+      "schema": { "$ref": "#/entities/Announcement" },
+      "description": "Studio boards announcements"
+    },
+    "auth_customers": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" },
+          "password": { "type": "string" }
+        },
+        "required": ["id", "name", "email", "phone", "password"]
+      },
+      "description": "Registered customer accounts"
+    },
+    "auth_admins": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" },
+          "studioId": { "type": "string" }
+        },
+        "required": ["id", "name", "email", "password", "studioId"]
+      },
+      "description": "Registered studio owner/administrator accounts"
+    },
+    "auth_artists": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" },
+          "password": { "type": "string" },
+          "artistId": { "type": "string" }
+        },
+        "required": ["id", "name", "email", "phone", "password", "artistId"]
+      },
+      "description": "Registered artist accounts"
+    }
+  }
+}
