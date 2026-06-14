@@ -1,20 +1,36 @@
 workflows:
   ios-capacitor-build:
-    name: iOS Capacitor Build
+    name: iOS Modern Capacitor Build
     instance_type: mac_mini_m1
     environment:
       node: latest
       xcode: latest
     scripts:
-      - name: Install npm dependencies
+      - name: 1. Node Paketlerini Kur
         script: npm install
-      - name: Build web project
+      - name: 2. Web Kodlarini Derle
         script: npm run build
-      - name: Capacitor Sync iOS
+      - name: 3. iOS Klasorunu Senkronize Et
         script: npx cap sync ios
-      - name: Build iOS App
+      - name: 4. Swift Paketlerini Zorla Cozumle (SPM)
         script: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO clean build
+          xcodebuild -resolvePackageDependencies -project App.xcodeproj -scheme App
+      - name: 5. iOS Uygulamasını Arşivle
+        script: |
+          cd ios/App
+          xcodebuild -project App.xcodeproj \
+            -scheme App \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath $PWD/build/App.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            clean archive
+      - name: 6. Cikti Dosyasini Klasore Tasi
+        script: |
+          cd ios/App/build/App.xcarchive/Products/Applications
+          mkdir -p ../../Release-iphoneos
+          cp -R App.app ../../Release-iphoneos/
     artifacts:
       - ios/App/build/Release-iphoneos/*.app
