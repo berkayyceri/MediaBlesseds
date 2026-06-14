@@ -27,10 +27,9 @@ workflows:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             clean archive
-      - name: 6. Cikti Dosyasini Klasore Tasi
+      - name: 6. Cikti Dosyasini İndirme Klasorune Kopyala
         script: |
-          cd ios/App/build/App.xcarchive/Products/Applications
-          mkdir -p ../../Release-iphoneos
-          cp -R App.app ../../Release-iphoneos/
+          mkdir -p build-output
+          cp -R ios/App/build/App.xcarchive/Products/Applications/App.app build-output/
     artifacts:
-      - ios/App/build/Release-iphoneos/*.app
+      - build-output/*.app
